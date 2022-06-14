@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0, user-scalable=no,minimal-ui" />
+        <title>Vod20-getmic</title>
+    </head>
+
+    <body>
+        <div>
+            <button type="button" onclick="mic_operate('')">
+                <p>Mic</p>
+            </button>
+            <audio id="audio_player" autoplay style="display:none;"></audio>
+        </div>
+
+        <script type="text/javascript">
+		function mic_operate(in_value){
+		    const v_constrains = window.constraints = {video: false, audio:{noiseSuppression:true,echoCancellation: true, autoGainControl: false ,chanelCount: 1,sampleRate: 44100 , sampleSize: 2}};
+
+		    if(navigator.mediaDevices.getUserMedia){
+		        navigator.mediaDevices.getUserMedia(v_constrains).then(mic_success).catch(mic_error);
+		    } else if (navigator.webkitGetUserMedia){
+		        navigator.webkitGetUserMedia(v_constrains).then(mic_success).catch(mic_error);
+		    } else if (navigator.mozGetUserMedia){
+		        navagator.mozGetUserMedia(v_constrains).then(mic_success).catch(mic_error);
+		    } else if (navigator.getUserMedia){
+		        navigator.getUserMedia(v_constrains).then(mic_success).catch(mic_error);
+		    }
+		}
+		function mic_success(in_stream){
+		    //first method,works except bluetooth
+		    document.getElementById("audio_player").srcObject=in_stream;
+
+		     document.getElementById("btn_micswitch").innerHTML="success end!!";
+		}
+
+		function mic_error(in_err){
+		    console.log("发生错误: "+in_err.name);
+		    document.getElementById("btn_micswitch").innerHTML="err: "+in_err.name;
+
+		}	
+	</script>        
+    </body>  
+</html>
